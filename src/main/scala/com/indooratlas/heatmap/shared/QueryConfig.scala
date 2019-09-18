@@ -4,7 +4,8 @@ case class QueryConfig(
   dataApiKey: String,
   dates: Seq[QueryConfig.Date],
   sessionFilter: Session => Boolean = (s: Session) => true,
-  estimateFilter: Estimate => Boolean = (s: Estimate) => true
+  estimateFilter: Estimate => Boolean = (s: Estimate) => true,
+  maxSessions: Int = 1000
 )
 
 object QueryConfig{

@@ -1,5 +1,6 @@
 package com.indooratlas.heatmap.js
 
+import com.indooratlas.heatmap.shared.DataApi.StatusCallBack
 import com.indooratlas.heatmap.shared.{DataApi, Estimate, QueryConfig}
 
 import scala.scalajs.js
@@ -25,16 +26,20 @@ object MapBoxGeoJson {
     json
   }
 
-  def fetchGeoJson(config: QueryConfig, mapBoxCallback: js.Function2[String, js.Object, Unit], layout: Layout): Unit = {
+  def fetchGeoJson(
+    config: QueryConfig,
+    mapBoxCallback: js.Function2[String, js.Object, Unit],
+    statusCallBack: StatusCallBack): Unit = {
+
     def callBack(es: Seq[Estimate]): Unit = {
       val geoJsonString = MapBoxGeoJson.fromEstimates(es).toString()
-      val mean = Estimate.getMean(es)
+      println(s"fetchGeoJson callback: estimate count = ${es.size} ")
+      val mean = Estimate.getCenter(es)
       val jsMean = js.Dynamic.literal("center" -> js.Array(mean.lon, mean.lat))
-      layout.status.textContent = "Data ready."
       println("Data ready")
       mapBoxCallback(geoJsonString, jsMean)
     }
 
-    DataApi.fetchCoordinates(config, callBack)
+    DataApi.fetchEstimates(config, callBack, statusCallBack)
   }
 }

@@ -43,6 +43,12 @@ var map = new mapboxgl.Map({
 
     map.flyTo(mean);
 
+    if(map.getSource('trees') != undefined){
+        map.removeLayer('trees-heat')
+        map.removeLayer('trees-point')
+        map.removeSource('trees')
+    }
+
     map.addSource('trees', {
       "type": "geojson",
       "data": jsonData});

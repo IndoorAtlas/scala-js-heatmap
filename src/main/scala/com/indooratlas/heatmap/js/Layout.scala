@@ -1,6 +1,6 @@
 package com.indooratlas.heatmap.js
 
-import com.indooratlas.heatmap.shared.{Estimate, QueryConfig}
+import com.indooratlas.heatmap.shared.{DataApi, Estimate, QueryConfig}
 import org.scalajs.dom
 import org.scalajs.dom.html
 import org.scalajs.dom.html.{Button, Input, Paragraph}
@@ -16,17 +16,32 @@ case class Layout(mapBoxCallback: js.Function2[String, js.Object, Unit]) {
   val status: Paragraph = p("Waiting for user input...").render
   status.style.color = "white"
 
+  var sessionCount = 0
+  var estimateCount = 0
+  val statusCallBack: DataApi.StatusCallBack = (sessions: Int, estimates: Int, isFinalCount: Boolean) => {
+    if(isFinalCount){
+      sessionCount = sessions
+      estimateCount = estimates
+      status.textContent = s"Data ready: $sessionCount sessions with $estimateCount estimates"
+    } else {
+      sessionCount += sessions
+      estimateCount += estimates
+      status.textContent = s"Downloading session ($sessionCount) data ($estimateCount)..."
+    }
+  }
+
+
   val submitButton: Button = button().render
   submitButton.textContent = "Submit"
 
   submitButton.onclick = (e: dom.MouseEvent) => {
-    println("Button Click!" + apiKeyInput.value)
+    println("Button Click! " + apiKeyInput.value)
     QueryConfig.parse(
       apiKeyInput.value, daysInput.value, floorInput.value
     ) match {
       case Some(config) => {
         status.textContent = "Downloading session data..."
-        MapBoxGeoJson.fetchGeoJson(config, mapBoxCallback, this)
+        MapBoxGeoJson.fetchGeoJson(config, mapBoxCallback,  statusCallBack)
       }
       case None =>  dom.window.alert("Malformed input")
     }
@@ -43,7 +58,7 @@ case class Layout(mapBoxCallback: js.Function2[String, js.Object, Unit]) {
       estimateFilter = (e: Estimate) => e.floor == 1
     )
     status.textContent = "Downloading session data..."
-    MapBoxGeoJson.fetchGeoJson(config, mapBoxCallback, this)
+    MapBoxGeoJson.fetchGeoJson(config, mapBoxCallback,  statusCallBack)
   }
 
   def appendAll(div: html.Div): Unit ={
