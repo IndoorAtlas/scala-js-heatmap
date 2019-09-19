@@ -51,14 +51,8 @@ case class Layout(mapBoxCallback: js.Function2[String, js.Object, Unit]) {
   exampleSubmitButton.textContent = "Example"
 
   exampleSubmitButton.onclick = (e: dom.MouseEvent) => {
-    import QueryConfig.Date
-    val config = QueryConfig(
-      "ba50cd0d-a694-4485-877c-85479007c459",
-      Seq(Date(2019, 9, 1), Date(2019, 9, 2), Date(2019, 9,3)),
-      estimateFilter = (e: Estimate) => e.floor == 1
-    )
-    status.textContent = "Downloading session data..."
-    MapBoxGeoJson.fetchGeoJson(config, mapBoxCallback,  statusCallBack)
+    status.textContent = "Downloading demo session data..."
+    MapBoxGeoJson.fetchGeoJson(QueryConfig.DemoConfigs.smarthouse, mapBoxCallback,  statusCallBack)
   }
 
   def appendAll(div: html.Div): Unit ={

@@ -28,4 +28,12 @@ object QueryConfig{
       case _: Exception => None
     }
   }
+
+  object DemoConfigs{
+    val smarthouse = QueryConfig(
+      "e362bf05-3e12-4e38-86e9-3ded71511fb2",
+      Seq(Date(2019, 9, 19))
+    )
+
+  }
 }
