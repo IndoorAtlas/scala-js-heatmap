@@ -19,6 +19,8 @@ object DataApi {
     urlLoader: UrlLoader = DataUtils.loadUrlJS
   ): Unit = {
     println(s"MaxSessions: ${queryConfig.maxSessions}")
+    // Resetting the status
+    statusCallback(0, 0, true)
 
     val daySessions = queryConfig.dates.map { date =>
       fetchSessionMetadata(date.year, date.month, date.day, queryConfig.dataApiKey, urlLoader)
