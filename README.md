@@ -1,11 +1,15 @@
-# Heatmap visualization using Data Api and Scala.js
+# Heatmap visualization using IndoorAtlas Data API and Scala.js
+![Example heatmap](images/example_heatmap.png)
+ 
+## Goal
 This project demonstrates how
- * IndoorAtlas Data Api can be used to fetch the session data, based on
-   * Data api key
-   * Given dates
- * The data can be used with a Heatmap visualization libraries (MapBox in this case)
+ * IndoorAtlas Data Api can be used to fetch the session data, based on Data API key and given dates
+ * The data can be used with heatmap visualization libraries (MapBox in this case)
 
 The end result is a simple web service that can be used to visualize IndoorAtlas session data.
+
+## Live demo
+Visualise your own user data here (TODO).
 
 ## Building and running
  * Install [sbt 1.3.0](https://www.scala-sbt.org/download.html)
