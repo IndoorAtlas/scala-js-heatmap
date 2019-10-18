@@ -6,21 +6,19 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success, Try}
 
-object DataApi {
+object DataApiClient {
   private val urlPrefix = "https://data-api.indooratlas.com/public/v1/sdk-sessions"
   type UrlLoader = String => Future[String]
-  // session count, estimate count, flag if final count (else increment)
-  type StatusCallBack = (Int, Int, Boolean) => Unit
 
   def fetchEstimates(
     queryConfig: QueryConfig,
-    dataReadyCallback: Seq[Estimate] => Unit,
-    statusCallback: StatusCallBack,
+    dataReadyCallback: Callbacks.DataReady,
+    statusCallback: Callbacks.StatusUpdate,
     urlLoader: UrlLoader = DataUtils.loadUrlJS
   ): Unit = {
     println(s"MaxSessions: ${queryConfig.maxSessions}")
     // Resetting the status
-    statusCallback(0, 0, true)
+    statusCallback(sessionCount = 0, estimateCount = 0, resetBeforeIncrement = true)
 
     val daySessions = queryConfig.dates.map { date =>
       fetchSessionMetadata(date.year, date.month, date.day, queryConfig.dataApiKey, urlLoader)
@@ -60,7 +58,7 @@ object DataApi {
 
     sessions.onComplete{
       case Success(sessions) => {
-        statusCallback(sessions.size, sessions.map{_.estimates.size}.sum, true)
+        statusCallback(sessions.size, sessions.map{_.estimates.size}.sum, resetBeforeIncrement = true)
         dataReadyCallback(sessions.filter(queryConfig.sessionFilter).flatMap(_.estimates))
       }
       case Failure(_) => println("Fetching estimates failed...")
@@ -78,7 +76,7 @@ object DataApi {
     urlLoader(url).map { jsonStr =>
       val sessionData = ujson.read(jsonStr).arr
       sessionData.map { d =>
-        val session = Session(d("sdkSetupId").str, d("apikeyId").str, d("bundleId").str, d("idaUuid").str, Seq())
+        val session = Session(d("sdkSetupId").str, d("bundleId").str, d("idaUuid").str, Seq())
         session
       }
     }
@@ -87,7 +85,7 @@ object DataApi {
   def fetchSession(
     sdkSetupId: String,
     apiKey: String,
-    statusCallBack: StatusCallBack,
+    statusCallBack: Callbacks.StatusUpdate,
     urlLoader: UrlLoader
   ): Future[Seq[Estimate]] ={
     val url = s"$urlPrefix/$sdkSetupId/events?key=$apiKey"
@@ -110,7 +108,7 @@ object DataApi {
 
     es.onComplete{
       case Success(es: Seq[Estimate]) => {
-        statusCallBack(1, es.size, false)
+        statusCallBack(sessionCount = 1, estimateCount = es.size, resetBeforeIncrement = false)
         println(s"Session estimate count ${es.size}")
       }
       case Failure(_) => ()

@@ -3,8 +3,8 @@ package com.indooratlas.heatmap.shared
 case class QueryConfig(
   dataApiKey: String,
   dates: Seq[QueryConfig.Date],
-  sessionFilter: Session => Boolean = (s: Session) => true,
-  estimateFilter: Estimate => Boolean = (s: Estimate) => true,
+  sessionFilter: Session => Boolean = (_: Session) => true,
+  estimateFilter: Estimate => Boolean = (_: Estimate) => true,
   maxSessions: Int = 1000
 )
 
@@ -30,6 +30,7 @@ object QueryConfig{
   }
 
   object DemoConfigs{
+    // TODO: change this
     val smarthouse = QueryConfig(
       "e362bf05-3e12-4e38-86e9-3ded71511fb2",
       Seq(Date(2019, 9, 19))
