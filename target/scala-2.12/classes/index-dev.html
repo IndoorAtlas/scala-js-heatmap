@@ -1,0 +1,165 @@
+<!--Adapted from MapBox Heatmap tutorial: https://docs.mapbox.com/help/tutorials/make-a-heatmap-with-mapbox-gl-js/-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>IndoorAtlas heatmap visualization</title>
+    <meta name='robots' content='noindex, nofollow'>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #inputForm { position:absolute; width:800px; padding:10px; font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;}
+    </style>
+
+</head>
+<body>
+
+
+
+<div id='map'></div>
+
+<div class='map-overlay top' id="inputForm">
+</div>
+
+<script type="text/javascript" src="../heatmap-opt.js"></script>
+<!--<script type="text/javascript" src="../heatmap-fastopt.js"></script>-->
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiaW5kb29yYXRsYXMiLCJhIjoiY2p4MWszd2FoMDBsYTRhcXR0amY4dWtyNCJ9.m0ov_9IYgLUp4h0F14hjvg';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v10',
+    center: [25.4651,65.0121],
+    zoom: 14
+});
+
+  map.on('load', function() {
+
+  let mapBoxCallback = (pointStr, mean) => {
+    let jsonData = JSON.parse(pointStr);
+
+    map.flyTo(mean);
+
+    if(map.getSource('trees') != undefined){
+        map.removeLayer('trees-heat')
+        map.removeLayer('trees-point')
+        map.removeSource('trees')
+    }
+
+    map.addSource('trees', {
+      "type": "geojson",
+      "data": jsonData});
+
+  let maxZoom = 21;
+    map.addLayer({
+        "id": "trees-heat",
+        "type": "heatmap",
+        "source": "trees",
+        "maxzoom": maxZoom,
+        "paint": {
+          // increase weight as diameter breast height increases
+            "heatmap-weight": {
+                "property": "dbh",
+                "type": "exponential",
+                "stops": [
+                    [1, 0],
+                    [62, 1]
+                ]
+            },
+          // increase intensity as zoom level increases
+            "heatmap-intensity": {
+                "stops": [
+                    [11, 1],
+                    [15, 3]
+                ]
+            },
+          // use sequential color palette to use exponentially as the weight increases
+            "heatmap-color": [
+                "interpolate",
+                ["linear"],
+                ["heatmap-density"],
+                0, "rgba(236,222,239,0)",
+                0.2, "rgb(208,209,230)",
+                0.4, "rgb(166,189,219)",
+                0.6, "rgb(103,169,207)",
+                0.8, "rgb(28,144,153)"
+            ],
+            // increase radius as zoom increases
+            "heatmap-radius": {
+                "stops": [
+                    [11, 15],
+                    [maxZoom, 40]
+                ]
+            },
+            // decrease opacity to transition into the circle layer
+            "heatmap-opacity": {
+                "default": 1,
+                "stops": [
+                    [maxZoom - 1, 1],
+                    [maxZoom, 0]
+                ]
+            },
+        }
+    }, 'waterway-label');
+
+    map.addLayer({
+        "id": "trees-point",
+        "type": "circle",
+        "source": "trees",
+        "minzoom": maxZoom - 1,
+        "paint": {
+          // increase the radius of the circle as the zoom level and dbh value increases
+            "circle-radius": {
+                "property": "dbh",
+                "type": "exponential",
+                "stops": [
+                    [{ zoom: 15, value: 1 }, 2],
+                    [{ zoom: 15, value: 62 }, 4],
+                    [{ zoom: 22, value: 1 }, 8],
+                    [{ zoom: 22, value: 62 }, 20],
+                ]
+            },
+            "circle-color": {
+                "property": "colorIndex",
+                "type": "exponential",
+                "stops": [
+                  [1, "rgb(107,110,207)"],
+                  [2, "rgb(99,121,57)"],
+                  [3, "rgb(181,207,107)"],
+                  [4, "rgb(140,109,49)"],
+                  [5, "rgb(231,186,82)"],
+                  [6, "rgb(132,60,57)"],
+                  [7, "rgb(214,97,107)"],
+                  [8, "rgb(123,65,115)"],
+                  [9, "rgb(206,109,189)"],
+                  [10, "rgb(236,222,239)"],
+                  [11, "rgb(57,59,121)"],
+                  [12, "rgb(208,209,230)"],
+                  [13, "rgb(166,189,219)"],
+                  [14, "rgb(103,169,207)"],
+                  [15, "rgb(28,144,153)"],
+                  [16, "rgb(1,108,89)"]
+                ]
+            },
+            "circle-stroke-color": "white",
+            "circle-stroke-width": 1,
+            "circle-opacity": {
+                "stops": [
+                    [maxZoom - 1, 0],
+                    [maxZoom, 1]
+                ]
+            }
+        }
+    }, 'waterway-label');
+    }
+
+    Heatmap.initializeForm(document.getElementById('inputForm'), mapBoxCallback);
+
+});
+
+</script>
+</body>
+</html>
