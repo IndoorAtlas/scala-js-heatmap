@@ -1,6 +1,6 @@
 package com.indooratlas.heatmap.js
 
-import com.indooratlas.heatmap.shared.{Callbacks, DataApiClient, Estimate, QueryConfig}
+import com.indooratlas.heatmap.shared.{Callbacks, QueryConfig}
 import org.scalajs.dom
 import org.scalajs.dom.html
 import org.scalajs.dom.html.{Button, Input, Paragraph}
