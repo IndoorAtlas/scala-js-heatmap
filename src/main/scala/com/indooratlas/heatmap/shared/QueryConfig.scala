@@ -30,10 +30,9 @@ object QueryConfig{
   }
 
   object DemoConfigs{
-    // TODO: change this
     val smarthouse = QueryConfig(
       "e362bf05-3e12-4e38-86e9-3ded71511fb2",
-      Seq(Date(2019, 9, 19))
+      Seq(Date(2019, 10, 21))
     )
 
   }
