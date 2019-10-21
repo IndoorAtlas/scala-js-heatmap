@@ -1,14 +1,12 @@
 package com.indooratlas.heatmap.js
 
-import com.indooratlas.heatmap.shared.{Callbacks, QueryConfig}
+import com.indooratlas.heatmap.shared.{DataApiClient, QueryConfig}
 import org.scalajs.dom
 import org.scalajs.dom.html
 import org.scalajs.dom.html.{Button, Input, Paragraph}
 import scalatags.JsDom.all._
 
-import scala.scalajs.js
-
-case class Layout(mapBoxCallback: js.Function2[String, js.Object, Unit]) {
+case class Layout(mapBoxCallback: MapBoxGeoJson.DataReadyCallback) {
   val apiKeyInput: Input = input(`type`:="text", placeholder:="dataApiKey").render
   val daysInput: Input = input(`type`:="text", placeholder:="Day(s): yyyy/mm/dd,yyyy/...").render
   val floorInput: Input = input(`type`:="text", placeholder:="Floor level(s): 1,2,...").render
@@ -18,7 +16,7 @@ case class Layout(mapBoxCallback: js.Function2[String, js.Object, Unit]) {
 
   var sessionCount = 0
   var estimateCount = 0
-  val statusCallBack: Callbacks.StatusUpdate = (sessions: Int, estimates: Int, isFinalCount: Boolean) => {
+  val statusCallBack: DataApiClient.Callbacks.StatusUpdate = (sessions: Int, estimates: Int, isFinalCount: Boolean) => {
     if(isFinalCount){
       sessionCount = sessions
       estimateCount = estimates

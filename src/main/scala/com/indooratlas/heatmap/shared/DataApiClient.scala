@@ -10,6 +10,16 @@ object DataApiClient {
   private val urlPrefix = "https://data-api.indooratlas.com/public/v1/sdk-sessions"
   type UrlLoader = String => Future[String]
 
+  object Callbacks {
+    trait StatusUpdate {
+      def apply(sessionCount: Int, estimateCount: Int, resetBeforeIncrement: Boolean): Unit
+    }
+
+    trait DataReady {
+      def apply(estimates: Seq[Estimate]): Unit
+    }
+  }
+
   def fetchEstimates(
     queryConfig: QueryConfig,
     dataReadyCallback: Callbacks.DataReady,
@@ -91,7 +101,7 @@ object DataApiClient {
     val url = s"$urlPrefix/$sdkSetupId/events?key=$apiKey"
     val htmlStr = urlLoader(url)
 
-    val es = htmlStr.map{ srt =>
+    val estimates = htmlStr.map{ srt =>
       val data = ujson.read(srt)
       for{
         d <- data.arr
@@ -106,7 +116,7 @@ object DataApiClient {
       }
     }
 
-    es.onComplete{
+    estimates.onComplete{
       case Success(es: Seq[Estimate]) => {
         statusCallBack(sessionCount = 1, estimateCount = es.size, resetBeforeIncrement = false)
         println(s"Session estimate count ${es.size}")
@@ -114,7 +124,7 @@ object DataApiClient {
       case Failure(_) => ()
     }
 
-    es
+    estimates
   }
 
 }

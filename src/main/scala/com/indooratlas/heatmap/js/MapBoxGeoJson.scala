@@ -1,10 +1,17 @@
 package com.indooratlas.heatmap.js
 
-import com.indooratlas.heatmap.shared.{Callbacks, DataApiClient, Estimate, QueryConfig}
+import com.indooratlas.heatmap.shared.{DataApiClient, Estimate, QueryConfig}
 
 import scala.scalajs.js
 
 object MapBoxGeoJson {
+  /**
+   * Provides the results to MapBox visualization. Arguments:
+   * String - GeoJSON string of estimate data
+   * js.Object - Mean coordinates of the estimate (to show correct place)
+   */
+  type DataReadyCallback = js.Function2[String, js.Object, Unit]
+
   // "Diameter at breast height" - basically determines the size of the points
   val DBH = 3
 
@@ -25,13 +32,13 @@ object MapBoxGeoJson {
     json
   }
 
-
   def fetchGeoJson(
     config: QueryConfig,
-    mapBoxCallback: js.Function2[String, js.Object, Unit],
-    statusCallBack: Callbacks.StatusUpdate): Unit = {
+    mapBoxCallback: DataReadyCallback,
+    statusCallBack: DataApiClient.Callbacks.StatusUpdate): Unit = {
 
-    def callBack(es: Seq[Estimate]): Unit = {
+    // Redirects the results to MapBox visualization
+    val callBack: DataApiClient.Callbacks.DataReady = (es: Seq[Estimate]) => {
       val geoJsonString = MapBoxGeoJson.fromEstimates(es).toString()
       println(s"fetchGeoJson callback: estimate count = ${es.size} ")
       val mean = Estimate.getCenter(es)
