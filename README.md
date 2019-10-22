@@ -8,12 +8,16 @@ It demonstrates how
   can be used to fetch the session data, based on Data API key and given dates
  * The data can be used with heatmap visualization libraries, such as 
  [MapBox GL JS](https://docs.mapbox.com/mapbox-gl-js/api/)
-
-## Live demo
+ 
+## Live demo [here](https://indooratlas.github.io/scala-js-heatmap/target/scala-2.12/classes/index.html)
 Visualise your own user data or use an example visualization 
 [here](https://indooratlas.github.io/scala-js-heatmap/target/scala-2.12/classes/index.html "Live demo").
 In order to visualize your own user data, you will need an IndoorAtlas account with session data and a 
 [Data API key](https://indooratlas.freshdesk.com/support/solutions/articles/36000050559-creating-applications-and-api-keys).
+
+## Commercial use
+This repository is for demonstration only. Users wishing to use IndoorAtlas Data API for commercial purposes, 
+contact [sales@indooratlas.com](mailto:sales@indooratlas.com).   
 
 ## Related content
 * IndoorAtlas Data REST [API Overview](https://indooratlas.freshdesk.com/support/solutions/articles/36000086507-data-rest-api-overview)
