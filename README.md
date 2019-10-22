@@ -12,10 +12,14 @@ It demonstrates how
 ## Live demo
 Visualise your own user data or use an example visualization 
 [here](https://indooratlas.github.io/scala-js-heatmap/target/scala-2.12/classes/index.html "Live demo").
+In order to visualize your own user data, you will need an IndoorAtlas account with session data and a 
+[Data API key](https://indooratlas.freshdesk.com/support/solutions/articles/36000050559-creating-applications-and-api-keys).
 
 ## Related content
 * IndoorAtlas Data REST [API Overview](https://indooratlas.freshdesk.com/support/solutions/articles/36000086507-data-rest-api-overview)
-(with examples) and [API Reference](https://docs.indooratlas.com/data-api)
+(with examples), and [API Reference](https://docs.indooratlas.com/data-api)
+* [Instructions](https://indooratlas.freshdesk.com/support/solutions/articles/36000050559-creating-applications-and-api-keys)
+ for how to create Data API keys
 * MapBox GL JS [API](https://docs.mapbox.com/mapbox-gl-js/api/) and 
 [Heatmap tutorial](https://docs.mapbox.com/help/tutorials/make-a-heatmap-with-mapbox-gl-js/)
 * Scala.js [home page](https://www.scala-js.org/) and [tutorial](http://www.lihaoyi.com/hands-on-scala-js/)
