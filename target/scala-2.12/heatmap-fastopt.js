@@ -1988,9 +1988,13 @@ $c_Lcom_indooratlas_heatmap_js_MapBoxGeoJson$.prototype.estimateToGeoJson__p1__L
   var this$24 = $m_Lujson_Value$();
   var i$4 = e.colorIndex__I();
   var y$3 = new $c_Lujson_Num().init___D(i$4);
-  var array$2 = [new $c_T2().init___O__O("colorIndex", y$3)];
+  var jsx$3 = new $c_T2().init___O__O("colorIndex", y$3);
+  var this$28 = $m_Lujson_Value$();
+  var s = e.toSessionViewerLink__T();
+  var y$4 = new $c_Lujson_Str().init___T(s);
+  var array$2 = [jsx$3, new $c_T2().init___O__O("link", y$4)];
   var map$1 = new $c_scm_LinkedHashMap().init___();
-  var this$30 = $m_Lujson_Value$();
+  var this$34 = $m_Lujson_Value$();
   map$1.put__O__O__s_Option("dbh", new $c_Lujson_Num().init___D(y$2));
   var i$5 = 0;
   var len$1 = $uI(array$2.length);
@@ -2001,11 +2005,11 @@ $c_Lcom_indooratlas_heatmap_js_MapBoxGeoJson$.prototype.estimateToGeoJson__p1__L
     map$1.put__O__O__s_Option(i$6.$$und1$f, i$6.$$und2$f);
     i$5 = ((1 + i$5) | 0)
   };
-  var y$4 = new $c_Lujson_Obj().init___scm_LinkedHashMap(map$1);
-  var properties = new $c_T2().init___O__O("properties", y$4);
+  var y$5 = new $c_Lujson_Obj().init___scm_LinkedHashMap(map$1);
+  var properties = new $c_T2().init___O__O("properties", y$5);
   var array$3 = [properties, geometry];
   var map$2 = new $c_scm_LinkedHashMap().init___();
-  var this$36 = $m_Lujson_Value$();
+  var this$40 = $m_Lujson_Value$();
   map$2.put__O__O__s_Option("type", new $c_Lujson_Str().init___T("Feature"));
   var i$7 = 0;
   var len$2 = $uI(array$3.length);
@@ -2449,7 +2453,7 @@ $c_Lcom_indooratlas_heatmap_shared_QueryConfig$DemoConfigs$.prototype.init___ = 
   $n_Lcom_indooratlas_heatmap_shared_QueryConfig$DemoConfigs$ = this;
   var jsx$1 = $m_sc_Seq$();
   var array = [new $c_Lcom_indooratlas_heatmap_shared_QueryConfig$Date().init___I__I__I(2019, 10, 21)];
-  this.smarthouse$1 = new $c_Lcom_indooratlas_heatmap_shared_QueryConfig().init___T__sc_Seq__F1__F1__I("e362bf05-3e12-4e38-86e9-3ded71511fb2", $as_sc_Seq(jsx$1.apply__sc_Seq__sc_GenTraversable(new $c_sjs_js_WrappedArray().init___sjs_js_Array(array))), $m_Lcom_indooratlas_heatmap_shared_QueryConfig$().apply$default$3__F1(), $m_Lcom_indooratlas_heatmap_shared_QueryConfig$().apply$default$4__F1(), 10000);
+  this.smarthouse$1 = new $c_Lcom_indooratlas_heatmap_shared_QueryConfig().init___T__sc_Seq__F1__F1__I("e362bf05-3e12-4e38-86e9-3ded71511fb2", $as_sc_Seq(jsx$1.apply__sc_Seq__sc_GenTraversable(new $c_sjs_js_WrappedArray().init___sjs_js_Array(array))), $m_Lcom_indooratlas_heatmap_shared_QueryConfig$().apply$default$3__F1(), $m_Lcom_indooratlas_heatmap_shared_QueryConfig$().apply$default$4__F1(), 1000);
   return this
 });
 var $d_Lcom_indooratlas_heatmap_shared_QueryConfig$DemoConfigs$ = new $TypeData().initClass({
@@ -10609,7 +10613,7 @@ $c_Lcom_indooratlas_heatmap_shared_QueryConfig$.prototype.parse__T__T__T__s_Opti
     })(this, floorNumbers));
     var x$2$1 = $m_s_Predef$().wrapRefArray__AO__scm_WrappedArray(dates);
     var x$4 = $m_Lcom_indooratlas_heatmap_shared_QueryConfig$().apply$default$3__F1();
-    return new $c_s_Some().init___O(new $c_Lcom_indooratlas_heatmap_shared_QueryConfig().init___T__sc_Seq__F1__F1__I(apiKey, x$2$1, x$4, estimateFilter, 10000))
+    return new $c_s_Some().init___O(new $c_Lcom_indooratlas_heatmap_shared_QueryConfig().init___T__sc_Seq__F1__F1__I(apiKey, x$2$1, x$4, estimateFilter, 1000))
   } catch (e$3) {
     var e$4 = $m_sjsr_package$().wrapJavaScriptException__O__jl_Throwable(e$3);
     if ($is_jl_Exception(e$4)) {
@@ -16224,6 +16228,10 @@ $c_Lcom_indooratlas_heatmap_shared_Estimate.prototype.productElement__I__O = (fu
 $c_Lcom_indooratlas_heatmap_shared_Estimate.prototype.toString__T = (function() {
   return (((((((("Estimate: [" + this.lat$1) + ", ") + this.lon$1) + ", ") + this.floor$1) + ", ") + this.sdkSetupId$1) + "]")
 });
+$c_Lcom_indooratlas_heatmap_shared_Estimate.prototype.toSessionViewerLink__T = (function() {
+  var url = ("https://app.indooratlas.com/positionings/" + this.sdkSetupId$1);
+  return (("<a href=" + url) + " target=_blank> Show in session viewer </a>")
+});
 $c_Lcom_indooratlas_heatmap_shared_Estimate.prototype.hashCode__I = (function() {
   var acc = (-889275714);
   acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().doubleHash__D__I(this.lat$1));
@@ -16259,7 +16267,13 @@ $c_Lcom_indooratlas_heatmap_shared_Estimate.prototype.colorIndex__I = (function(
     var jsx$1 = z$2;
     break
   };
-  return ((1 + (($uB(jsx$1) % 16) | 0)) | 0)
+  var x$1 = $uB(jsx$1);
+  var ix = ((1 + ((((x$1 < 0) ? ((-x$1) | 0) : x$1) % 16) | 0)) | 0);
+  var x$2 = ("Color index: " + ix);
+  var this$10 = $m_s_Console$();
+  var this$11 = $as_Ljava_io_PrintStream(this$10.outVar$2.v$1);
+  this$11.java$lang$JSConsoleBasedPrintStream$$printString__T__V((x$2 + "\n"));
+  return ix
 });
 $c_Lcom_indooratlas_heatmap_shared_Estimate.prototype.productIterator__sc_Iterator = (function() {
   return new $c_sr_ScalaRunTime$$anon$1().init___s_Product(this)
