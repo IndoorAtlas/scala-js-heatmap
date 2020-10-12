@@ -19,7 +19,11 @@ object MapBoxGeoJson {
   private def estimateToGeoJson(e: Estimate): ujson.Obj ={
     val geometry = "geometry" -> ujson.Obj("type" -> "Point", "coordinates" -> ujson.Arr(e.lon, e.lat))
     val myType = "type" -> "Feature"
-    val properties = "properties" -> ujson.Obj("dbh" -> DBH, "colorIndex" -> e.colorIndex)
+    val properties = "properties" -> ujson.Obj(
+      "dbh" -> DBH,
+      "colorIndex" -> e.colorIndex,
+      "link" -> e.toSessionViewerLink
+    )
     ujson.Obj(
       myType, properties, geometry
     )
@@ -36,7 +40,8 @@ object MapBoxGeoJson {
   def fetchGeoJson(
     config: QueryConfig,
     mapBoxCallback: DataReadyCallback,
-    statusCallBack: DataApiClient.Callbacks.StatusUpdate): Unit = {
+    statusCallBack: DataApiClient.Callbacks.StatusUpdate
+  ): Unit = {
 
     // Redirects the results to MapBox visualization
     val callBack: DataApiClient.Callbacks.DataReady = (es: Seq[Estimate]) => {

@@ -6,7 +6,17 @@ case class Estimate(
   floor: Int,
   sdkSetupId: String
 ){
-  def colorIndex: Int = sdkSetupId.getBytes().sum % 16 + 1
+  def colorIndex: Int = {
+    val ix = math.abs(sdkSetupId.getBytes().sum) % 16 + 1
+    println("Color index: " + ix)
+    ix
+  }
+
+  def toSessionViewerLink: String = {
+    val url = s"https://app.indooratlas.com/positionings/$sdkSetupId"
+    val linkText = "Show in session viewer"
+    s"<a href=$url target=_blank> $linkText </a>"
+  }
 
   override def toString: String = {
     s"Estimate: [$lat, $lon, $floor, $sdkSetupId]"

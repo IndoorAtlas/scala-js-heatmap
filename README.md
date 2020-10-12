@@ -10,10 +10,14 @@ It demonstrates how
  [MapBox GL JS](https://docs.mapbox.com/mapbox-gl-js/api/)
  
 ## Live demo [here](https://indooratlas.github.io/scala-js-heatmap/target/scala-2.12/classes/index.html)
-Visualise your own user data or use an example visualization 
+* Visualise your own user data or use an example visualization 
 [here](https://indooratlas.github.io/scala-js-heatmap/target/scala-2.12/classes/index.html "Live demo").
-In order to visualize your own user data, you will need an IndoorAtlas account with session data and a 
+* In order to visualize your own user data, you will need an IndoorAtlas account with session data and a 
 [Data API key](https://indooratlas.freshdesk.com/support/solutions/articles/36000050559-creating-applications-and-api-keys).
+* When using your own Data API key and logged in to IndoorAtlas, paths can also be used as a link to view the session in the IndoorAtlas
+session viewer:
+
+ ![Example link](images/example_link.png)
 
 ## Commercial use
 This repository is for demonstration only. Users wishing to use IndoorAtlas Data API for commercial purposes, 
